@@ -26,7 +26,9 @@ rdsp-ps
 The webserver runs on port 80, and redirects to index.html if you connect to it with no path.
 
 At present, we provide two public statistics pages:
+
   whiteboard.html : a simple display of penalties per team
+  
   img/scores.png : a simple graph of team scores over time (by jam)
   
   
