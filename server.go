@@ -86,10 +86,26 @@ func drawPtsPerTeam( igr *imgg.ImageGraphics) bool {
 	c := chart.ScatterChart{Title: "Total Points Per Team"}
 	c.XRange.TicSetting.Mirror = 1
 	c.YRange.TicSetting.Mirror = 1
+	c.XRange.TicSetting.Minor = 0
+	c.XRange.TicSetting.Grid = chart.GridLines
+
+	//larger fonts for Key etc. This does break some of the borders of plot :(
+	c.Options = chart.DefaultOptions
+	c.Options[chart.KeyElement] = chart.Style{LineColor: color.NRGBA{0x20, 0x20, 0x20, 0xff},LineWidth: 2, LineStyle: chart.SolidLine,FillColor: color.NRGBA{0xf0, 0xf0, 0xf0, 0xc0},Font: chart.Font{Size:chart.HugeFontSize}}
+	c.Options[chart.MajorTicElement] = chart.Style{LineColor: color.NRGBA{0x20, 0x20, 0x20, 0xff},LineWidth: 2, LineStyle: chart.SolidLine,FillColor: color.NRGBA{0xf0, 0xf0, 0xf0, 0xc0},Font: chart.Font{Size:chart.HugeFontSize}}
+	c.Options[chart.TitleElement] = chart.Style{LineColor: color.NRGBA{0x20, 0x20, 0x20, 0xff},LineWidth: 2, LineStyle: chart.SolidLine,FillColor: color.NRGBA{0xf0, 0xf0, 0xf0, 0xc0},Font: chart.Font{Size:chart.HugeFontSize}}
+	c.Options[chart.TitleElement] = chart.Style{LineColor: color.NRGBA{0x20, 0x20, 0x20, 0xff},LineWidth: 2, LineStyle: chart.SolidLine,FillColor: color.NRGBA{0xf0, 0xf0, 0xf0, 0xc0},Font: chart.Font{Size:chart.HugeFontSize}}
+	//
 
 	var x,y,y2 []float64
 	var cc []string
 
+	c.YRange.MinMode.Fixed = true
+	c.YRange.MinMode.Value = 0.0
+	c.XRange.TicSetting.Format = func(i float64) string {
+			return cc[int(i)]
+		}
+	c.XRange.TicSetting.Tics = 1 //move tics "up inside" so we can see them
 	//something like
 	jams, l := getsortedJams(Stats.Jams)
 	if l < 1 { //we have no actual data yet, still initing probably
@@ -97,32 +113,28 @@ func drawPtsPerTeam( igr *imgg.ImageGraphics) bool {
 		y = []float64{0.0}
 		y2 = []float64{0.0}
 		cc = []string{"",""}
+		c.XRange.Fixed(0.0,1.0,1.0)
 	} else {
+		c.XRange.Fixed(0.0,float64(l),1.0)
 		x = make([]float64,l,l)
 		y = make([]float64,l,l)
 		y2 = make([]float64,l,l)
-		cc = make([]string,l+1, l+1)
-		cc[0] = ""
+		cc = make([]string,l+1,l+1)
+		//cc[0] = ""
+		cc[l] = ""
 		for i,j := range jams {
 			x[i] = float64(i)
 			y[i] = float64(Stats.Jams[j].TotalScores[0])
 			y2[i] = float64(Stats.Jams[j].TotalScores[1])
-			cc[i+1] = j
+			cc[i] = j
 		}
 	}
-	// then team names are Teams[0].Name and Teams[1].Name
-	// it's not clear if we can get the colours from the
 
-	//x := []float64{1.,2.,3.,4.,5.}  //this is just an incrementing list of points (= jam number, continuing counting into p2 without resetting)
-	//y := []float64{0.,0.,10.,20.,30.}
-	//y2 := []float64{10.,20.,30.,30.,30.}
-	//c.XRange.Category = []string{"","P1J1","P1J2","P1J3","P1J4","P2J1"} //if we stuff categories in the Axis before adding data, we can force "non-standard names" fpr the tics
-	// we need the "zero" category to be empty, due to how tics are calculated for categorics, and the rest of categories need to map to X values exactly
+
 	c.AddDataPair(Teams[0].Name, x, y, chart.PlotStyleLinesPoints, chart.Style{Symbol: '#', SymbolColor: color.NRGBA{0x00, 0xee, 0x00, 0xff}})
 	c.AddDataPair(Teams[1].Name, x, y2, chart.PlotStyleLinesPoints, chart.Style{Symbol: '#', SymbolColor: color.NRGBA{0x00, 0xee, 0xff, 0xff}})
 	c.Plot(igr)
-	 //and switch the active pane post update
-	//writeImage(w, &img)
+
 	return true
 }
 
