@@ -11,13 +11,33 @@ This simple proxy tries to solve this by reexporting the scoreboard stats on its
 it runs binds to all interfaces by default, so it should be visible to everyone.)
 
 The present version of the scoreboard is commandline only. It takes 1 argument, the URL (including port) of the scoreboard to register with (it 
-defaults to http://localhost:8000 in the assumption that you're running it on the scoreboard machine.)
+defaults to localhost:8000 in the assumption that you're running it on the scoreboard machine.)
+
+invoke as:
+
+rdsp-ps -addr=address:port 
+
+or 
+
+rdsp-ps 
+
+(for the default localhost:8000)
 
 The webserver runs on port 80, and redirects to index.html if you connect to it with no path.
 
 At present, we provide two public statistics pages:
+
   whiteboard.html : a simple display of penalties per team
+  
   img/scores.png : a simple graph of team scores over time (by jam)
+  
+  
+
+Note: if you're building this project from source, we recommend that you use:
+  go build -ldflags="-s -w" 
+and then compress the binary with UPX
+  upx rdsb-ps 
+as this will produce an output binary at almost 25% of the default compiler output.
   
   
   
