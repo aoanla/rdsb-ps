@@ -31,13 +31,13 @@ func page_Index(buff *bytes.Buffer) bool {
 
 func page_PenaltyWhiteboard( buff *bytes.Buffer) bool {
   var s strings.Builder
-  s.WriteString("<html><style>body {width: 100%; font-weight: bold;} div {background-color: purple; color: white;} table { border-collapse: collapse; width: 100%; font-weight: bold; text-align: center; } thead { background-color: thistle; } table tr:nth-child(even) { background-color: #F7F7FF; } tr { border: 3px solid purple; } td { border: 1px solid grey; } .v1 { color: #009933; } .v2 { color: #009933; } .v3 { color: #009933; } .v4 { color: #996600; } .v5 { color: #996600; } .v6 { color: #990000; } .v7 { color: #990000; } .v8 { color: #990000; } .v9 { color: #990000; }  </style><body>")
+  s.WriteString("<html><style>body {width: 100%; font-weight: bold;} div {background-color: purple; color: white;} table { table-layout: fixed; border-collapse: collapse; width: 100%; font-weight: bold; text-align: center; } thead { background-color: thistle; } table tr:nth-child(even) { background-color: #F7F7FF; } tr { border: 3px solid purple; } td { border: 1px solid grey; } .v1 { color: #009933; } .v2 { color: #009933; } .v3 { color: #009933; } .v4 { color: #996600; } .v5 { color: #996600; } .v6 { color: #990000; } .v7 { color: #990000; } .v8 { color: #990000; } .v9 { color: #990000; }  </style><body>")
   var s1,s2 strings.Builder //for the parallel strings here in penalties
   for i := 0; i<2; i++ {
     skaters,l := getsortedSkaters(Teams[i].Skaters)
     s.WriteString("<div>Penalties: ")
     s.WriteString(Teams[i].Name)
-    s.WriteString("</div><table><thead><tr><td>S#</td><td>P1</td><td>P2</td><td>P3</td><td>P4</td><td>P5</td><td>P6</td><td>P7</td><td>P8</td><td>P9</td><td>p#</td></tr></thead>")
+    s.WriteString("</div><table><thead><tr><td style='width: 30%;'>S#</td><td>P1</td><td>P2</td><td>P3</td><td>P4</td><td>P5</td><td>P6</td><td>P7</td><td>P8</td><td>P9</td><td>p#</td></tr></thead>")
 
     if l < 1 { continue } //avoid iterating empty list if this is in setup
 
