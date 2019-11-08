@@ -11,7 +11,17 @@ This simple proxy tries to solve this by reexporting the scoreboard stats on its
 it runs binds to all interfaces by default, so it should be visible to everyone.)
 
 The present version of the scoreboard is commandline only. It takes 1 argument, the URL (including port) of the scoreboard to register with (it 
-defaults to http://localhost:8000 in the assumption that you're running it on the scoreboard machine.)
+defaults to localhost:8000 in the assumption that you're running it on the scoreboard machine.)
+
+invoke as:
+
+rdsp-ps -addr=address:port 
+
+or 
+
+rdsp-ps 
+
+(for the default localhost:8000)
 
 The webserver runs on port 80, and redirects to index.html if you connect to it with no path.
 
