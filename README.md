@@ -30,5 +30,13 @@ At present, we provide two public statistics pages:
   img/scores.png : a simple graph of team scores over time (by jam)
   
   
+
+Note: if you're building this project from source, we recommend that you use:
+  go build -ldflags="-s -w" 
+and then compress the binary with UPX
+  upx rdsb-ps 
+as this will produce an output binary at almost 25% of the default compiler output.
+  
+  
   
 
