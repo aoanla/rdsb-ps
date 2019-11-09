@@ -24,14 +24,14 @@ func getsortedSkaters(map_ map[string]*Skater) ([]string, int) {
 }
 
 func page_Index(buff *bytes.Buffer) bool {
-  buff.WriteString("<html><body><a href='whiteboard.html'>Penalty Whiteboard</a><br /><a href='img/scores.png'>Total Scores Graph</a></body></html>")
+  buff.WriteString("<html><style>body {width: 100%; font-weight: bold; font-size: 36pt; }</style><body><a href='whiteboard.html'>Penalty Whiteboard</a><br /><a href='img/scores.png'>Total Scores Graph</a></body></html>")
   return true
 }
 
 
 func page_PenaltyWhiteboard( buff *bytes.Buffer) bool {
   var s strings.Builder
-  s.WriteString("<html><style>body {width: 100%; font-weight: bold; font-size: 24pt; } div {background-color: purple; color: white;} table { table-layout: fixed; border-collapse: collapse; width: 100%; font-weight: bold; text-align: center; font-size: 24pt; } thead { background-color: thistle; } table tr:nth-child(even) { background-color: #F7F7FF; } tr { border: 3px solid purple; } td { border: 1px solid grey; } .v1 { color: #009933; } .v2 { color: #009933; } .v3 { color: #009933; } .v4 { color: #996600; } .v5 { color: #996600; } .v6 { color: #990000; } .v7 { color: #990000; } .v8 { color: #990000; } .v9 { color: #990000; }  </style><body>")
+  s.WriteString("<html><meta http-equiv='refresh' content='5' /><style>body {width: 100%; font-weight: bold; font-size: 24pt; } div {background-color: purple; color: white;} table { table-layout: fixed; border-collapse: collapse; width: 100%; font-weight: bold; text-align: center; font-size: 24pt; } thead { background-color: thistle; } table tr:nth-child(even) { background-color: #F7F7FF; } tr { border: 3px solid purple; } td { border: 1px solid grey; } .v1 { color: #009933; } .v2 { color: #009933; } .v3 { color: #009933; } .v4 { color: #996600; } .v5 { color: #996600; } .v6 { color: #990000; } .v7 { color: #990000; } .v8 { color: #990000; } .v9 { color: #990000; }  </style><body>")
   var s1,s2 strings.Builder //for the parallel strings here in penalties
   for i := 0; i<2; i++ {
     skaters,l := getsortedSkaters(Teams[i].Skaters)
