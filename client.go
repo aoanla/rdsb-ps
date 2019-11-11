@@ -1,5 +1,15 @@
-import "github.com/gorilla/websocket"
+package main
 
+import (
+    "github.com/gorilla/websocket"
+    "encoding/json"
+    "sort"
+    "strconv"
+    "strings"
+    "fmt"
+    "log"
+    "time"
+)
 
 //we need to pass the websocket to the client, as there's another go routine which uses it to send pings so we have to share it
 func scoreboard_client(c *websocket.Conn) {
@@ -20,7 +30,7 @@ func scoreboard_client(c *websocket.Conn) {
 
   //register all the items we're interested in, via JSON
   my_mesg, _  := json.Marshal(res)
-  err = c.WriteMessage(websocket.TextMessage, my_mesg)
+  err := c.WriteMessage(websocket.TextMessage, my_mesg)
   if err != nil {
     	log.Println("Registration:", err)
     	return

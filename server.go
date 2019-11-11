@@ -14,7 +14,6 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-
 	"github.com/vdobler/chart"
 	"github.com/vdobler/chart/imgg"
 	"sort"
@@ -31,7 +30,7 @@ func web_server(port *string) {
 	var str string
 	//check for missing :
 	if (*port)[0] != ':' {
-		str = ':' + *port
+		str = ":" + *port
 	} else {
 		str = *port
 	}

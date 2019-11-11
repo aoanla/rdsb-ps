@@ -7,15 +7,10 @@ import (
 	"os"
 	"os/signal"
 	"time"
-  "encoding/json"
-	"sort"
-	"strconv"
-	"strings"
-	"fmt"
+
 	"github.com/gorilla/websocket"
 	"github.com/vdobler/chart/imgg"
 	"bytes"
-	"net/http"
 	//profiling hack - comment out when not profiling
 	//"github.com/pkg/profile"
 )
