@@ -16,6 +16,8 @@ import (
 	"github.com/vdobler/chart/imgg"
 	"bytes"
 	"net/http"
+	//profiling hack - comment out when not profiling
+	//"github.com/pkg/profile"
 )
 
 type reg_type struct {
@@ -40,6 +42,9 @@ func getPageBuffers(map_ map[string]*Page_buffer) []string {
 }
 
 func main() {
+	//profiling
+	//defer profile.Start(profile.MemProfile).Stop()
+	//profiling
 	flag.Parse()
 	log.SetFlags(0)
 
