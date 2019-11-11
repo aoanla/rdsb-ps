@@ -20,6 +20,30 @@ import (
 	"sort"
 )
 
+func web_server(port *string) {
+	//
+	//http.Handle("/img",http.StripPrefix("/img/",http.))
+
+	http.HandleFunc("/img/", imgHandler)
+	//http.HandleFunc("/red/", redHandler)
+	http.HandleFunc("/", htmlHandler)
+
+	var str string
+	//check for missing :
+	if (*port)[0] != ':' {
+		str = ':' + *port
+	} else {
+		str = *port
+	}
+
+	log.Printf("Listening on %s\n", str)
+	err := http.ListenAndServe(str, nil)
+	if err != nil {
+		log.Fatal("ListenAndServe:", err)
+	}
+}
+
+
 var root = flag.String("root", ".", "file system path")
 
 //Pager is a map[string]func(bytebuffer)bool
