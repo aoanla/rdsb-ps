@@ -159,7 +159,7 @@ func scoreboard_client(c *websocket.Conn) {
               }
             case "Na": // name
               Teams[teamnum].Name, _ = updates[k].(string)
-            case "Score":
+            case "Sc":
               //Teams[teamnum].Score = updates[k].(string)
             }
           }
