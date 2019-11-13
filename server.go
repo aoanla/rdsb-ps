@@ -161,6 +161,63 @@ func drawPtsPerTeam( igr *imgg.ImageGraphics) bool {
 	return true
 }
 
+func drawDeltaPtsPerTeam( igr *imgg.ImageGraphics) bool {
+	//c is a chart.Chart type
+	c := chart.BarChart{Title: "Total Points Per Team", ShowVal: 2}
+	c.XRange.TicSetting.Mirror = 1
+	c.YRange.TicSetting.Mirror = 1
+	c.XRange.TicSetting.Minor = 0
+	c.XRange.TicSetting.Grid = chart.GridLines
+
+	//larger fonts for Key etc. This does break some of the borders of plot :(
+	c.Options = chart.DefaultOptions
+	c.Options[chart.KeyElement] = chart.Style{LineColor: color.NRGBA{0x20, 0x20, 0x20, 0xff},LineWidth: 2, LineStyle: chart.SolidLine,FillColor: color.NRGBA{0xf0, 0xf0, 0xf0, 0xc0},Font: chart.Font{Size:chart.HugeFontSize}}
+	c.Options[chart.MajorTicElement] = chart.Style{LineColor: color.NRGBA{0x20, 0x20, 0x20, 0xff},LineWidth: 2, LineStyle: chart.SolidLine,FillColor: color.NRGBA{0xf0, 0xf0, 0xf0, 0xc0},Font: chart.Font{Size:chart.HugeFontSize}}
+	c.Options[chart.TitleElement] = chart.Style{LineColor: color.NRGBA{0x20, 0x20, 0x20, 0xff},LineWidth: 2, LineStyle: chart.SolidLine,FillColor: color.NRGBA{0xf0, 0xf0, 0xf0, 0xc0},Font: chart.Font{Size:chart.HugeFontSize}}
+	c.Options[chart.TitleElement] = chart.Style{LineColor: color.NRGBA{0x20, 0x20, 0x20, 0xff},LineWidth: 2, LineStyle: chart.SolidLine,FillColor: color.NRGBA{0xf0, 0xf0, 0xf0, 0xc0},Font: chart.Font{Size:chart.HugeFontSize}}
+	//
+
+	var x,y,y2 []float64
+	var cc []string
+
+	c.YRange.MinMode.Fixed = true
+	c.YRange.MinMode.Value = 0.0
+	c.XRange.TicSetting.Format = func(i float64) string {
+			return cc[int(i)]
+		}
+	c.XRange.TicSetting.Tics = 1 //move tics "up inside" so we can see them
+	//something like
+	jams, l := getsortedJams(Stats.Jams)
+	if l < 1 { //we have no actual data yet, still initing probably
+		x = []float64{0.0}
+		y = []float64{0.0}
+		y2 = []float64{0.0}
+		cc = []string{"",""}
+		c.XRange.Fixed(0.0,1.0,1.0)
+	} else {
+		c.XRange.Fixed(0.0,float64(l),1.0)
+		x = make([]float64,l,l)
+		y = make([]float64,l,l)
+		y2 = make([]float64,l,l)
+		cc = make([]string,l+1,l+1)
+		//cc[0] = ""
+		cc[l] = ""
+		for i,j := range jams {
+			x[i] = float64(i)
+			y[i] = float64(Stats.Jams[j].ScoreDeltas[0])
+			y2[i] = float64(Stats.Jams[j].ScoreDeltas[1])
+			cc[i] = j
+		}
+	}
+
+
+	c.AddDataPair(Teams[0].Name, x, y, chart.Style{Symbol: '#', SymbolColor: color.NRGBA{0x00, 0xee, 0x00, 0xff}})
+	c.AddDataPair(Teams[1].Name, x, y2, chart.Style{Symbol: '#', SymbolColor: color.NRGBA{0x00, 0xee, 0xff, 0xff}})
+	c.Plot(igr)
+
+	return true
+}
+
 func imgHandler(w http.ResponseWriter, r *http.Request) {
 	// get path p
 	p := r.URL.Path[5:] //the part of the path after /img/
