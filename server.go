@@ -163,7 +163,7 @@ func drawPtsPerTeam( igr *imgg.ImageGraphics) bool {
 
 func drawDeltaPtsPerTeam( igr *imgg.ImageGraphics) bool {
 	//c is a chart.Chart type
-	c := chart.BarChart{Title: "Total Points Per Team", ShowVal: 2}
+	c := chart.BarChart{Title: "Total Points Per Jam", ShowVal: 2}
 	c.XRange.TicSetting.Mirror = 1
 	c.YRange.TicSetting.Mirror = 1
 	c.XRange.TicSetting.Minor = 0
@@ -185,9 +185,9 @@ func drawDeltaPtsPerTeam( igr *imgg.ImageGraphics) bool {
 	c.XRange.TicSetting.Format = func(i float64) string {
 			return cc[int(i)]
 		}
-	c.XRange.TicSetting.Tics = 1 //move tics "up inside" so we can see them
 	//something like
 	jams, l := getsortedJams(Stats.Jams)
+
 	if l < 1 { //we have no actual data yet, still initing probably
 		x = []float64{0.0}
 		y = []float64{0.0}
@@ -200,7 +200,7 @@ func drawDeltaPtsPerTeam( igr *imgg.ImageGraphics) bool {
 		y = make([]float64,l,l)
 		y2 = make([]float64,l,l)
 		cc = make([]string,l+1,l+1)
-		//cc[0] = ""
+		cc[0] = ""
 		cc[l] = ""
 		for i,j := range jams {
 			x[i] = float64(i)
@@ -210,9 +210,10 @@ func drawDeltaPtsPerTeam( igr *imgg.ImageGraphics) bool {
 		}
 	}
 
-
-	c.AddDataPair(Teams[0].Name, x, y, chart.Style{Symbol: '#', SymbolColor: color.NRGBA{0x00, 0xee, 0x00, 0xff}})
-	c.AddDataPair(Teams[1].Name, x, y2, chart.Style{Symbol: '#', SymbolColor: color.NRGBA{0x00, 0xee, 0xff, 0xff}})
+	c.AddDataPair(Teams[0].Name, x, y, chart.Style{Symbol: 'o', SymbolColor: color.NRGBA{0x00, 0xee, 0x00, 0xff}, LineColor: color.NRGBA{0xcc, 0x00, 0x00, 0xff},
+		FillColor: color.NRGBA{0xff, 0x80, 0x80, 0xff}, LineStyle: chart.SolidLine})
+	c.AddDataPair(Teams[1].Name, x, y2, chart.Style{Symbol: '#', SymbolColor: color.NRGBA{0x00, 0xee, 0xff, 0xff}, LineColor: color.NRGBA{0xcc, 0x00, 0x00, 0xff},
+		FillColor: color.NRGBA{0x80, 0x80, 0xff, 0xff}, LineStyle: chart.SolidLine})
 	c.Plot(igr)
 
 	return true

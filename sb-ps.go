@@ -51,6 +51,8 @@ func main() {
 	Pages = make(map[string]*Page_buffer)
 	Plotter["scores.png"] = drawPtsPerTeam
 	Plots["scores.png"] = NewPageBuffer()
+	Plotter["dscores.png"] = drawDeltaPtsPerTeam
+	Plots["dscores.png"] = NewPageBuffer()
 	Pager["whiteboard.html"] = page_PenaltyWhiteboard
 	Pages["whiteboard.html"] = NewPageBuffer()
 	Pager["index.html"] = page_Index
