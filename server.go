@@ -160,7 +160,7 @@ func drawPtsPerTeam( igr *imgg.ImageGraphics) bool {
 
 func drawDeltaPtsPerTeam( igr *imgg.ImageGraphics) bool {
 	//c is a chart.Chart type
-	c := chart.BarChart{Title: "Total Points Per Jam", ShowVal: 2}
+	c := chart.BarChart{Title: "Total Points Per Jam", ShowVal: 5}
 	c.XRange.TicSetting.Mirror = 1
 	c.YRange.TicSetting.Mirror = 1
 	c.XRange.TicSetting.Minor = 0
