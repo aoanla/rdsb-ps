@@ -14,8 +14,8 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-	"github.com/vdobler/chart"
-	"github.com/vdobler/chart/imgg"
+	"github.com/aoanla/chart"
+	"github.com/aoanla/chart/imgg"
 	"sort"
 )
 

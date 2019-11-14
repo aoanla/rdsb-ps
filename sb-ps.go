@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
-	"github.com/vdobler/chart/imgg"
+	"github.com/aoanla/chart/imgg"
 	"bytes"
 	//profiling hack - comment out when not profiling
 	//"github.com/pkg/profile"
