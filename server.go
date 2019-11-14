@@ -117,7 +117,7 @@ func drawPtsPerTeam( igr *imgg.ImageGraphics) bool {
 	c.Options[chart.KeyElement] = chart.Style{LineColor: color.NRGBA{0x20, 0x20, 0x20, 0xff},LineWidth: 2, LineStyle: chart.SolidLine,FillColor: color.NRGBA{0xf0, 0xf0, 0xf0, 0xc0},Font: chart.Font{Size:chart.HugeFontSize}}
 	c.Options[chart.MajorTicElement] = chart.Style{LineColor: color.NRGBA{0x20, 0x20, 0x20, 0xff},LineWidth: 2, LineStyle: chart.SolidLine,FillColor: color.NRGBA{0xf0, 0xf0, 0xf0, 0xc0},Font: chart.Font{Size:chart.HugeFontSize}}
 	c.Options[chart.TitleElement] = chart.Style{LineColor: color.NRGBA{0x20, 0x20, 0x20, 0xff},LineWidth: 2, LineStyle: chart.SolidLine,FillColor: color.NRGBA{0xf0, 0xf0, 0xf0, 0xc0},Font: chart.Font{Size:chart.HugeFontSize}}
-	c.Options[chart.TitleElement] = chart.Style{LineColor: color.NRGBA{0x20, 0x20, 0x20, 0xff},LineWidth: 2, LineStyle: chart.SolidLine,FillColor: color.NRGBA{0xf0, 0xf0, 0xf0, 0xc0},Font: chart.Font{Size:chart.HugeFontSize}}
+
 	//
 
 	var x,y,y2 []float64
@@ -125,10 +125,6 @@ func drawPtsPerTeam( igr *imgg.ImageGraphics) bool {
 
 	c.YRange.MinMode.Fixed = true
 	c.YRange.MinMode.Value = 0.0
-	c.XRange.TicSetting.Format = func(i float64) string {
-			return cc[int(i)]
-		}
-	c.XRange.TicSetting.Tics = 1 //move tics "up inside" so we can see them
 	//something like
 	jams, l := getsortedJams(Stats.Jams)
 	if l < 1 { //we have no actual data yet, still initing probably
@@ -152,6 +148,7 @@ func drawPtsPerTeam( igr *imgg.ImageGraphics) bool {
 			cc[i] = j
 		}
 	}
+	c.XRange.Category = cc
 
 
 	c.AddDataPair(Teams[0].Name, x, y, chart.PlotStyleLinesPoints, chart.Style{Symbol: '#', SymbolColor: color.NRGBA{0x00, 0xee, 0x00, 0xff}})
@@ -174,41 +171,40 @@ func drawDeltaPtsPerTeam( igr *imgg.ImageGraphics) bool {
 	c.Options[chart.KeyElement] = chart.Style{LineColor: color.NRGBA{0x20, 0x20, 0x20, 0xff},LineWidth: 2, LineStyle: chart.SolidLine,FillColor: color.NRGBA{0xf0, 0xf0, 0xf0, 0xc0},Font: chart.Font{Size:chart.HugeFontSize}}
 	c.Options[chart.MajorTicElement] = chart.Style{LineColor: color.NRGBA{0x20, 0x20, 0x20, 0xff},LineWidth: 2, LineStyle: chart.SolidLine,FillColor: color.NRGBA{0xf0, 0xf0, 0xf0, 0xc0},Font: chart.Font{Size:chart.HugeFontSize}}
 	c.Options[chart.TitleElement] = chart.Style{LineColor: color.NRGBA{0x20, 0x20, 0x20, 0xff},LineWidth: 2, LineStyle: chart.SolidLine,FillColor: color.NRGBA{0xf0, 0xf0, 0xf0, 0xc0},Font: chart.Font{Size:chart.HugeFontSize}}
-	c.Options[chart.TitleElement] = chart.Style{LineColor: color.NRGBA{0x20, 0x20, 0x20, 0xff},LineWidth: 2, LineStyle: chart.SolidLine,FillColor: color.NRGBA{0xf0, 0xf0, 0xf0, 0xc0},Font: chart.Font{Size:chart.HugeFontSize}}
 	//
 
 	var x,y,y2 []float64
 	var cc []string
 
 	c.YRange.MinMode.Fixed = true
-	c.YRange.MinMode.Value = 0.0
-	c.XRange.TicSetting.Format = func(i float64) string {
-			return cc[int(i)]
-		}
+	c.YRange.MinMode.Value = 0
+
 	//something like
 	jams, l := getsortedJams(Stats.Jams)
 
 	if l < 1 { //we have no actual data yet, still initing probably
-		x = []float64{0.0}
-		y = []float64{0.0}
-		y2 = []float64{0.0}
-		cc = []string{"",""}
-		c.XRange.Fixed(0.0,1.0,1.0)
+		x = []float64{0}
+		y = []float64{0}
+		y2 = []float64{0}
+		cc = []string{""}
+		c.XRange.Fixed(-0.5,1.5,1.0)
 	} else {
-		c.XRange.Fixed(0.0,float64(l),1.0)
+		c.XRange.Fixed(-0.5,float64(l)+0.5,1.0) //fix autoscaling bug in graph lib
 		x = make([]float64,l,l)
 		y = make([]float64,l,l)
 		y2 = make([]float64,l,l)
-		cc = make([]string,l+1,l+1)
-		cc[0] = ""
-		cc[l] = ""
+		//cc = make([]string,l+1,l+1)
+		//cc[0] = ""
+		//cc[l] = ""
 		for i,j := range jams {
 			x[i] = float64(i)
 			y[i] = float64(Stats.Jams[j].ScoreDeltas[0])
 			y2[i] = float64(Stats.Jams[j].ScoreDeltas[1])
-			cc[i] = j
+			//cc[i] = j
 		}
+		cc = jams
 	}
+	c.XRange.Category = cc
 
 	c.AddDataPair(Teams[0].Name, x, y, chart.Style{Symbol: 'o', SymbolColor: color.NRGBA{0x00, 0xee, 0x00, 0xff}, LineColor: color.NRGBA{0xcc, 0x00, 0x00, 0xff},
 		FillColor: color.NRGBA{0xff, 0x80, 0x80, 0xff}, LineStyle: chart.SolidLine})
