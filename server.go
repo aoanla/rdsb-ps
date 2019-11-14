@@ -68,8 +68,6 @@ func writeHTMLwithPaths(paths []string) {
 }
 
 
-
-
 func drawPlotswithPaths(paths []string) {
 	for _, p := range paths {
 		igr := imgg.New(1024,768, color.RGBA{0xff,0xff,0xff,0xff}, nil, nil)
@@ -125,6 +123,8 @@ func drawPtsPerTeam( igr *imgg.ImageGraphics) bool {
 
 	c.YRange.MinMode.Fixed = true
 	c.YRange.MinMode.Value = 0.0
+	c.YRange.TicSetting.Format = chart.FmtIntFloat
+
 	//something like
 	jams, l := getsortedJams(Stats.Jams)
 	if l < 1 { //we have no actual data yet, still initing probably
@@ -178,6 +178,7 @@ func drawDeltaPtsPerTeam( igr *imgg.ImageGraphics) bool {
 
 	c.YRange.MinMode.Fixed = true
 	c.YRange.MinMode.Value = 0
+	c.YRange.TicSetting.Format = chart.FmtIntFloat
 
 	//something like
 	jams, l := getsortedJams(Stats.Jams)
