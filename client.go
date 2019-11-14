@@ -48,6 +48,9 @@ func scoreboard_client(c *websocket.Conn) {
     }
     //grab a timestamp because we want to actually record when star passes and leads happen within a jam!
     update_time := time.Now()
+
+    //// DEBUG:
+    //log.Printf("Message: %v", object)
     //extract the actual keys, if it's safe to do so (we have a state update, and it is not empty - so we know its type)
     if state,prs := object["state"]; prs && (state != nil) {
       i := 0
@@ -74,7 +77,7 @@ func scoreboard_client(c *websocket.Conn) {
             case "Per": //Period / Jam sorted data, this should be Period(n).Jam(m).stuff
               periodnum, _ := strconv.Atoi(path[2][7:len(path[2])-1])
               jamnum, _  := strconv.Atoi(path[3][4:len(path[3])-1])
-              jamid := fmt.Sprintf("P%dJ%d",periodnum,jamnum)
+              jamid := fmt.Sprintf("P%dJ%02d",periodnum,jamnum)
               if _, prsnt := Stats.Jams[jamid]; !prsnt {
                 //make this jamid record before we do anything else - it needs to know its own place
                 Stats.Jams[jamid] = &JamStat{}
