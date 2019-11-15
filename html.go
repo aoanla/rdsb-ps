@@ -24,7 +24,7 @@ func getsortedSkaters(map_ map[string]*Skater) ([]string, int) {
 }
 
 func page_Index(buff *bytes.Buffer) bool {
-  buff.WriteString("<html><style>body {width: 100%; font-weight: bold; font-size: 36pt; }</style><body><a href='whiteboard.html'>Penalty Whiteboard</a><br /><a href='img/scores.png'>Total Scores Graph</a></body></html>")
+  buff.WriteString("<html><style>body {width: 100%; font-weight: bold; font-size: 36pt; }</style><body><a href='whiteboard.html'>Penalty Whiteboard</a><br /><a href='img/scores.png'>Total Scores Graph</a><br /><a href='img/dscores.png'>Jam Scores Graph</a><br /><a href='img/lead.png'>Lead Jammer % Graph</a></body></html>")
   return true
 }
 
