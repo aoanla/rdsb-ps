@@ -70,13 +70,14 @@ func writeHTMLwithPaths(paths []string) {
 
 func drawPlotswithPaths(paths []string) {
 	for _, p := range paths {
-		igr := imgg.New(1024,768, color.RGBA{0xff,0xff,0xff,0xff}, nil, nil)
-
+		//igr := imgg.New(1024,768, color.RGBA{0xff,0xff,0xff,0xff}, nil, nil)
+		//reusing shared buffer, so need to blank the image with a white rect first
+		ImgBuff.Rect(0,0,1024,768, chart.Style{LineColor: color.RGBA{0xff,0xff,0xff,0xff}, FillColor: color.RGBA{0xff,0xff,0xff,0xff}})
 		//success := Plotter[p](&igr)
-		if !Plotter[p](igr) {
+		if !Plotter[p](ImgBuff) {
 			log.Printf("failure encoding image path %s", p)
 		}
-		var img image.Image = igr.Image
+		var img image.Image = ImgBuff.Image
 		// what we should actually do is all of this stuff, including the write image, ahead ot time, into a data structure, and then just serve the contents in this handler
 		var buffer bytes.Buffer
 		//Plots[p].Writable() // new(bytes.Buffer) //this buffer is actually going to be part of the double-buffered type

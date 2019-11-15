@@ -7,7 +7,7 @@ import (
 	"os"
 	"os/signal"
 	"time"
-
+	"image/color"
 	"github.com/gorilla/websocket"
 	"github.com/aoanla/chart/imgg"
 	"bytes"
@@ -24,6 +24,7 @@ var addr = flag.String("addr", "localhost:8000", "URL of scoreboard")
 var port = flag.String("port", ":80", "port for local web server")
 var Teams [2]Team //team global state
 var Stats Stats_t //stats global state
+var ImgBuff *imgg.ImageGraphics //image buffer to reduce memory footprint + allocations
 
 func getPageBuffers(map_ map[string]*Page_buffer) []string {
 	i := 0
@@ -45,6 +46,7 @@ func main() {
 	log.SetFlags(0)
 
 	//init our mappings
+	ImgBuff = imgg.New(1024,768, color.RGBA{0xff,0xff,0xff,0xff}, nil, nil)
 	Plotter = make(map[string]func(*imgg.ImageGraphics)bool)
 	Pager = make(map[string]func(*bytes.Buffer)bool)
 	Plots = make(map[string]*Page_buffer)
