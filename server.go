@@ -216,6 +216,40 @@ func drawDeltaPtsPerTeam( igr *imgg.ImageGraphics) bool {
 	return true
 }
 
+func drawLeadsPerTeam( igr *imgg.ImageGraphics) bool {
+	//c is a chart.Chart type
+	c := chart.PieChart{Title: "Total Leads Per Team"}
+
+	//larger fonts for Key etc. This does break some of the borders of plot :(
+	c.Options = chart.DefaultOptions
+	c.Options[chart.KeyElement] = chart.Style{LineColor: color.NRGBA{0x20, 0x20, 0x20, 0xff},LineWidth: 2, LineStyle: chart.SolidLine,FillColor: color.NRGBA{0xf0, 0xf0, 0xf0, 0xc0},Font: chart.Font{Size:chart.HugeFontSize}}
+	c.Options[chart.MajorTicElement] = chart.Style{LineColor: color.NRGBA{0x20, 0x20, 0x20, 0xff},LineWidth: 2, LineStyle: chart.SolidLine,FillColor: color.NRGBA{0xf0, 0xf0, 0xf0, 0xc0},Font: chart.Font{Size:chart.HugeFontSize}}
+	c.Options[chart.TitleElement] = chart.Style{LineColor: color.NRGBA{0x20, 0x20, 0x20, 0xff},LineWidth: 2, LineStyle: chart.SolidLine,FillColor: color.NRGBA{0xf0, 0xf0, 0xf0, 0xc0},Font: chart.Font{Size:chart.HugeFontSize}}
+	//
+
+	x := []int{0,0,0}
+	cc := []string{Teams[0].Name, Teams[1].Name, "None"}
+
+	//something like
+	jams, l := getsortedJams(Stats.Jams)
+
+	if l > 0 {
+		for _,j := range jams {
+			 	switch lead := Stats.Jams[j].Lead; lead {
+				case -1:
+					x[2] += 1
+				case 0,1:
+					x[lead] += 1
+				}
+		}
+	}
+	c.AddIntDataPair("Fraction of Leads", cc, x)
+	c.Plot(igr)
+
+	return true
+}
+
+
 func imgHandler(w http.ResponseWriter, r *http.Request) {
 	// get path p
 	p := r.URL.Path[5:] //the part of the path after /img/

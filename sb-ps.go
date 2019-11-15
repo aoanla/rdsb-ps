@@ -53,6 +53,8 @@ func main() {
 	Plots["scores.png"] = NewPageBuffer()
 	Plotter["dscores.png"] = drawDeltaPtsPerTeam
 	Plots["dscores.png"] = NewPageBuffer()
+	Plotter["lead.png"] = drawLeadsPerTeam
+	Plots["lead.png"] = NewPageBuffer()
 	Pager["whiteboard.html"] = page_PenaltyWhiteboard
 	Pages["whiteboard.html"] = NewPageBuffer()
 	Pager["index.html"] = page_Index
